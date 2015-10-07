@@ -1,6 +1,7 @@
 package com.guitar.db;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,11 +63,22 @@ public class ModelPersistenceTests {
 		List<Model> mods = modelRepository.getModelsInPriceRange(BigDecimal.valueOf(1000L), BigDecimal.valueOf(2000L));
 		assertEquals(4, mods.size());
 	}
+	
+	@Test
+	public void testACustomMethod() throws Exception {
+		modelJpaRepository.aCustomMethod();
+	}
 
 	@Test
 	public void testGetModelsByPriceRangeAndWoodType() throws Exception {
 		List<Model> mods = modelRepository.getModelsByPriceRangeAndWoodType(BigDecimal.valueOf(1000L), BigDecimal.valueOf(2000L), "Maple");
 		assertEquals(3, mods.size());
+	}
+	
+	@Test
+	public void testGetModelsByPriceRangeAndWoodTypePageable() throws Exception {
+		Page<Model> mods = modelRepository.getModelsByPriceRangeAndWoodTypePageable(BigDecimal.valueOf(1000L), BigDecimal.valueOf(2000L), "Maple");
+		assertEquals(2, mods.getSize());
 	}
 
 	@Test
